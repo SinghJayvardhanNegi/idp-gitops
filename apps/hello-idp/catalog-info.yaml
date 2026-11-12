@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: hello-idp
+  description: Seed app deployed from apps/hello-idp by the Argo CD ApplicationSet.
+  annotations:
+    backstage.io/kubernetes-id: hello-idp
+    backstage.io/kubernetes-namespace: idp-poc
+    argocd/app-name: hello-idp
+spec:
+  type: service
+  lifecycle: experimental
+  owner: platform-devops
+  system: demo-apps

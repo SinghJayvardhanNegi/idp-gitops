@@ -1,0 +1,9 @@
+apiVersion: v2
+name: service
+description: >-
+  Generic chart for stateless services (the PoC's equivalent of Devtron's
+  "Deployment Template"). One chart, many apps - each app only supplies a
+  values.yaml in apps/<name>/.
+type: application
+version: 0.1.0
+appVersion: '1.0.0'

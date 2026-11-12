@@ -1,0 +1,4 @@
+# Read by the ApplicationSet git-files generator (bootstrap/applicationset.yaml).
+name: hello-idp
+namespace: idp-poc
+owner: platform-devops

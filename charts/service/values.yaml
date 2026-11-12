@@ -1,0 +1,62 @@
+# Defaults. Every key can be overridden per app in apps/<name>/values.yaml.
+nameOverride: ''
+
+image:
+  repository: hashicorp/http-echo
+  tag: '1.0'
+  pullPolicy: IfNotPresent
+
+# Extra container args (http-echo uses -text / -listen; real apps usually leave this empty)
+args: []
+
+replicaCount: 1
+containerPort: 5678
+
+service:
+  enabled: true
+  type: ClusterIP
+  port: 80
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    memory: 128Mi
+
+env: {}
+
+# Scheduling. The update-deployment template writes these for the
+# amd64 -> arm64 migration (same fields you paste in Devtron today).
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+probes:
+  enabled: true
+  path: /
+  initialDelaySeconds: 3
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 70
+
+# Catalog / portal metadata stamped on the workload.
+backstage:
+  # value of the backstage.io/kubernetes-id label (defaults to the release name)
+  kubernetesId: ''
+  # For workloads that have NO catalog-info.yaml (e.g. apps still deployed by
+  # Devtron, or anything created outside the portal): ai.enabled=true adds the
+  # annotations the Kubernetes ingestor looks for, so the workload shows up in
+  # the AI inventory automatically. Apps created by the create-service
+  # template are already declared in catalog-info.yaml - leave this false.
+  ai:
+    enabled: false
+    type: ai-inference # ai-inference | llm-gateway | ml-pipeline | ai-agent
+    owner: ''
+    description: ''
+
+podAnnotations: {}
+podLabels: {}

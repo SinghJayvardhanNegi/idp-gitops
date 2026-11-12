@@ -1,0 +1,17 @@
+# Seed app: proves the GitOps loop works before the demo starts.
+image:
+  repository: hashicorp/http-echo
+  tag: '1.0'
+args:
+  - '-text={"app":"hello-idp","status":"ok"}'
+containerPort: 5678
+replicaCount: 1
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 128Mi
+tolerations: []
+affinity: {}

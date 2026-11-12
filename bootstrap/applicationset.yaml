@@ -1,0 +1,48 @@
+# =============================================================================
+# The ONLY object an admin applies by hand. After this, every new folder
+# apps/<name>/app.yaml in the GitOps repo becomes an Argo CD Application
+# automatically - that is what makes "merge the PR = deploy" work.
+#   kubectl apply -n argocd -f bootstrap/applicationset.yaml
+# __GITOPS_REPO_URL__ is replaced by local-lab/up.sh (or by you).
+# =============================================================================
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: idp-apps
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ['missingkey=error']
+  generators:
+    - git:
+        repoURL: __GITOPS_REPO_URL__
+        revision: main
+        files:
+          - path: 'apps/*/app.yaml'
+        # re-read the repo every 30 s (default 3 min) so new apps show up fast in demos
+        requeueAfterSeconds: 30
+  template:
+    metadata:
+      name: '{{ .name }}'
+      labels:
+        managed-by: idp-portal
+        owner: '{{ .owner }}'
+    spec:
+      project: default
+      source:
+        repoURL: __GITOPS_REPO_URL__
+        targetRevision: main
+        path: charts/service
+        helm:
+          releaseName: '{{ .name }}'
+          valueFiles:
+            - '../../apps/{{ .path.basename }}/values.yaml'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{ .namespace }}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
