@@ -1,18 +1,29 @@
-# Helm values for charts/service. Created by the IDP portal; change it with the
-# "Edit app" template (or by a commit - Git is the source of truth).
 image:
   repository: hashicorp/http-echo
-  tag: '1.0'
+  tag: "1.0"
 args:
-  - '-text={"app":"orders-api","status":"ok"}'
+  - -text={"app":"orders-api","status":"ok"}
 containerPort: 5678
-replicaCount: 1
+replicaCount: 2
 resources:
   requests:
-    cpu: 50m
-    memory: 64Mi
+    cpu: 100m
+    memory: 96Mi
   limits:
-    cpu: 200m
-    memory: 128Mi
-tolerations: []
-affinity: {}
+    cpu: 300m
+    memory: 192Mi
+tolerations:
+  - key: dedicated
+    operator: Equal
+    value: m1
+    effect: NoSchedule
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: pool
+              operator: In
+              values:
+                - m1
+_lastChangedBy: idp-portal
