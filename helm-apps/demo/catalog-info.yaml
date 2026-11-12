@@ -1,0 +1,17 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: demo
+  description: "Helm chart podinfo"
+  tags: [helm]
+  annotations:
+    backstage.io/kubernetes-label-selector: app.kubernetes.io/instance=demo
+    backstage.io/kubernetes-namespace: idp-poc
+    argocd/app-name: demo
+    notdevtron.io/kind: Helm
+    notdevtron.io/chart: "podinfo@6.7.1"
+spec:
+  type: service
+  lifecycle: experimental
+  owner: group:default/platform-devops
+  system: demo-apps
