@@ -1,0 +1,4 @@
+# Read by the ApplicationSet (gitops/bootstrap/applicationset.yaml): one folder = one Argo CD app.
+name: orders-api
+namespace: idp-poc
+owner: platform-devops

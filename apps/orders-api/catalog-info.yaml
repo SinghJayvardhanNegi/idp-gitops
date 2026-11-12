@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: orders-api
+  description: "demo app"
+  annotations:
+    backstage.io/kubernetes-id: orders-api
+    backstage.io/kubernetes-namespace: idp-poc
+    argocd/app-name: orders-api
+spec:
+  type: service
+  lifecycle: experimental
+  owner: group:default/platform-devops
+  system: demo-apps
