@@ -1,0 +1,26 @@
+{{- if eq (include "service.kind" .) "CronJob" }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "service.name" . }}
+  labels:
+    {{- include "service.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.cronjob.schedule | quote }}
+  {{- with .Values.cronjob.timeZone }}
+  timeZone: {{ . | quote }}
+  {{- end }}
+  concurrencyPolicy: {{ .Values.cronjob.concurrencyPolicy }}
+  suspend: {{ .Values.cronjob.suspend }}
+  successfulJobsHistoryLimit: {{ .Values.cronjob.successfulJobsHistoryLimit }}
+  failedJobsHistoryLimit: {{ .Values.cronjob.failedJobsHistoryLimit }}
+  jobTemplate:
+    spec:
+      backoffLimit: {{ .Values.job.backoffLimit }}
+      template:
+        metadata:
+          labels:
+            {{- include "service.labels" . | nindent 12 }}
+        spec:
+          {{- include "service.podSpec" . | nindent 10 }}
+{{- end }}

@@ -1,0 +1,50 @@
+# =============================================================================
+# Helm apps (Devtron's "Chart Store" equivalent). Every folder
+# helm-apps/<name>/app.yaml becomes an Argo CD app that installs a chart from
+# its chart repository, with values.yaml taken from this Git repo.
+# __GITOPS_REPO_URL__ is replaced by local-lab/up.sh.
+# =============================================================================
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: idp-helm-apps
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ['missingkey=error']
+  generators:
+    - git:
+        repoURL: __GITOPS_REPO_URL__
+        revision: main
+        files:
+          - path: 'helm-apps/*/app.yaml'
+        requeueAfterSeconds: 30
+  template:
+    metadata:
+      name: '{{ .name }}'
+      labels:
+        managed-by: idp-portal
+        owner: '{{ .owner }}'
+        notdevtron.io/kind: helm
+    spec:
+      project: default
+      sources:
+        - repoURL: '{{ .repoURL }}'
+          chart: '{{ .chart }}'
+          targetRevision: '{{ .version }}'
+          helm:
+            releaseName: '{{ .name }}'
+            valueFiles:
+              - '$values/helm-apps/{{ .path.basename }}/values.yaml'
+        - repoURL: __GITOPS_REPO_URL__
+          targetRevision: main
+          ref: values
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{ .namespace }}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

@@ -1,3 +1,4 @@
+{{- if eq (include "service.kind" .) "Deployment" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -37,47 +38,5 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
     spec:
-      containers:
-        - name: app
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- with .Values.args }}
-          args:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          ports:
-            - name: http
-              containerPort: {{ .Values.containerPort }}
-          {{- with .Values.env }}
-          env:
-            {{- range $k, $v := . }}
-            - name: {{ $k }}
-              value: {{ $v | quote }}
-            {{- end }}
-          {{- end }}
-          {{- if .Values.probes.enabled }}
-          readinessProbe:
-            httpGet:
-              path: {{ .Values.probes.path }}
-              port: http
-            initialDelaySeconds: {{ .Values.probes.initialDelaySeconds }}
-          livenessProbe:
-            httpGet:
-              path: {{ .Values.probes.path }}
-              port: http
-            initialDelaySeconds: {{ add .Values.probes.initialDelaySeconds 10 }}
-          {{- end }}
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+      {{- include "service.podSpec" . | nindent 6 }}
+{{- end }}

@@ -1,0 +1,22 @@
+{{- if eq (include "service.kind" .) "Job" }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "service.name" . }}
+  labels:
+    {{- include "service.labels" . | nindent 4 }}
+  annotations:
+    # A Job's pod template is immutable: let Argo CD replace it when values change
+    argocd.argoproj.io/sync-options: Replace=true,Force=true
+spec:
+  backoffLimit: {{ .Values.job.backoffLimit }}
+  {{- with .Values.job.activeDeadlineSeconds }}
+  activeDeadlineSeconds: {{ . }}
+  {{- end }}
+  template:
+    metadata:
+      labels:
+        {{- include "service.labels" . | nindent 8 }}
+    spec:
+      {{- include "service.podSpec" . | nindent 6 }}
+{{- end }}

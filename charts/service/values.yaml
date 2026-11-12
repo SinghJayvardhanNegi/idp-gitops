@@ -1,6 +1,24 @@
 # Defaults. Every key can be overridden per app in apps/<name>/values.yaml.
 nameOverride: ''
 
+# Workload kind, like Devtron's chart types: Deployment | Job | CronJob
+kind: Deployment
+
+# Container command (Jobs/CronJobs usually set this; services usually don't)
+command: []
+
+job:
+  backoffLimit: 2
+  activeDeadlineSeconds: 600
+
+cronjob:
+  schedule: '*/5 * * * *'
+  timeZone: ''
+  concurrencyPolicy: Forbid
+  suspend: false
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+
 image:
   repository: hashicorp/http-echo
   tag: '1.0'
