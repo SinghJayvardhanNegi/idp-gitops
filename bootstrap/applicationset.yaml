@@ -27,6 +27,7 @@ spec:
       labels:
         managed-by: idp-portal
         owner: '{{ .owner }}'
+        cluster: '{{ if index . "cluster" }}{{ index . "cluster" }}{{ else }}in-cluster{{ end }}'
     spec:
       project: default
       source:
@@ -38,7 +39,8 @@ spec:
           valueFiles:
             - '../../apps/{{ .path.basename }}/values.yaml'
       destination:
-        server: https://kubernetes.default.svc
+        # app.yaml may set "cluster" (an Argo CD cluster name); default = this cluster
+        name: '{{ if index . "cluster" }}{{ index . "cluster" }}{{ else }}in-cluster{{ end }}'
         namespace: '{{ .namespace }}'
       syncPolicy:
         automated:

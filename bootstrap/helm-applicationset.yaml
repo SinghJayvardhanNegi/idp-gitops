@@ -25,6 +25,7 @@ spec:
       labels:
         managed-by: idp-portal
         owner: '{{ .owner }}'
+        cluster: '{{ if index . "cluster" }}{{ index . "cluster" }}{{ else }}in-cluster{{ end }}'
         notdevtron.io/kind: helm
     spec:
       project: default
@@ -40,7 +41,8 @@ spec:
           targetRevision: main
           ref: values
       destination:
-        server: https://kubernetes.default.svc
+        # app.yaml may set "cluster" (an Argo CD cluster name); default = this cluster
+        name: '{{ if index . "cluster" }}{{ index . "cluster" }}{{ else }}in-cluster{{ end }}'
         namespace: '{{ .namespace }}'
       syncPolicy:
         automated:
