@@ -15,7 +15,7 @@ resources:
 tolerations:
   - key: dedicated
     operator: Equal
-    value: m1
+    value: ml
     effect: NoSchedule
 affinity:
   nodeAffinity:
@@ -25,5 +25,5 @@ affinity:
             - key: pool
               operator: In
               values:
-                - m1
+                - ml
 _lastChangedBy: idp-portal
