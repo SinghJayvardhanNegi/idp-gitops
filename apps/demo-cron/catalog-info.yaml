@@ -1,0 +1,15 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: demo-cron
+  description: "abcd"
+  annotations:
+    backstage.io/kubernetes-id: demo-cron
+    backstage.io/kubernetes-namespace: idp-poc
+    argocd/app-name: demo-cron
+    notdevtron.io/kind: CronJob
+spec:
+  type: service
+  lifecycle: experimental
+  owner: group:default/data-platform
+  system: demo-apps
