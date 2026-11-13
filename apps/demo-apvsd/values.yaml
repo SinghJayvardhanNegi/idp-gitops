@@ -6,7 +6,7 @@ image:
 args:
   - '-text={"app":"demo-apvsd","status":"ok"}'
 containerPort: 5678
-replicaCount: 1
+replicaCount: 2
 resources:
   requests:
     cpu: 50m
