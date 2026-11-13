@@ -1,0 +1,5 @@
+# Read by the ApplicationSet (gitops/bootstrap/applicationset.yaml): one folder = one Argo CD app.
+name: abcd-job
+namespace: idp-poc
+cluster: kind-idp-lab-2
+owner: platform-devops

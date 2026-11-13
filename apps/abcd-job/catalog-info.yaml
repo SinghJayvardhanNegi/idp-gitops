@@ -1,0 +1,15 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: abcd-job
+  description: "cdab-job"
+  annotations:
+    backstage.io/kubernetes-id: abcd-job
+    backstage.io/kubernetes-namespace: idp-poc
+    argocd/app-name: abcd-job
+    notdevtron.io/kind: Job
+spec:
+  type: service
+  lifecycle: experimental
+  owner: group:default/platform-devops
+  system: demo-apps

@@ -1,0 +1,18 @@
+# Helm values for charts/service. Created by the IDP portal; change it with the
+# "Edit app" template (or by a commit - Git is the source of truth).
+kind: Job
+image:
+  repository: busybox
+  tag: '1.36'
+command: ['sh', '-c', "echo \"hello from NotDevtron\"; date; sleep 5"]
+containerPort: 5678
+replicaCount: 1
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 128Mi
+tolerations: []
+affinity: {}
