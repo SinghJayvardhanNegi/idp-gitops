@@ -1,7 +1,6 @@
-# Read by the Helm ApplicationSet (gitops/bootstrap/helm-applicationset.yaml).
 name: demo
 namespace: idp-poc
 owner: platform-devops
-repoURL: "https://stefanprodan.github.io/podinfo"
-chart: "podinfo"
-version: "6.7.1"
+repoURL: https://stefanprodan.github.io/podinfo
+chart: podinfo
+version: 6.7.2
