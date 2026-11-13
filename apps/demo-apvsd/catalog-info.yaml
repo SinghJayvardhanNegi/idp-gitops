@@ -1,0 +1,15 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: demo-apvsd
+  description: "anything"
+  annotations:
+    backstage.io/kubernetes-id: demo-apvsd
+    backstage.io/kubernetes-namespace: idp-poc
+    argocd/app-name: demo-apvsd
+    notdevtron.io/kind: Deployment
+spec:
+  type: service
+  lifecycle: experimental
+  owner: group:default/platform-devops
+  system: demo-apps

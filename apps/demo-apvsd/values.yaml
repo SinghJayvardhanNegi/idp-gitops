@@ -1,0 +1,18 @@
+# Helm values for charts/service. Created by the IDP portal; change it with the
+# "Edit app" template (or by a commit - Git is the source of truth).
+image:
+  repository: hashicorp/http-echo
+  tag: '1.0'
+args:
+  - '-text={"app":"demo-apvsd","status":"ok"}'
+containerPort: 5678
+replicaCount: 1
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 128Mi
+tolerations: []
+affinity: {}

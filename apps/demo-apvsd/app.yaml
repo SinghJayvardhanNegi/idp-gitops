@@ -1,0 +1,5 @@
+# Read by the ApplicationSet (gitops/bootstrap/applicationset.yaml): one folder = one Argo CD app.
+name: demo-apvsd
+namespace: idp-poc
+cluster: in-cluster
+owner: platform-devops
